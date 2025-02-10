@@ -1,12 +1,26 @@
 import telebot
+from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 
 TOKET = '7940519871:AAG_AMPSSV4l1a-ciuuejR4MGf8uFTCMuiE'
 bot = telebot.TeleBot(TOKET)
 
+
+def menu():
+    row = ReplyKeyboardMarkup(resize_keyboard=True)
+    row.add(KeyboardButton('📅 Узнать дату цветения'))
+    row.add(KeyboardButton('➕ Добавить цветок'))
+    return row
+
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     #bot.reply_to(message, 'Добро пожаловать!')
-    bot.send_message(message.chat.id, 'Добро пожаловать!')
+    bot.send_message(message.chat.id, 'Добро пожаловать!',reply_markup=menu())
+
+@bot.message_handler(func=lambda message: message.text == '📅 Узнать дату цветения')
+def ask_name_flowers(message):
+    bot.send_message(message.chat.id, 'Введите название цветка: ')
+
+
 
 @bot.message_handler(func=lambda message: True)
 def send_flower_data(message):
